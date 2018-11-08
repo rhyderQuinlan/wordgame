@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block body %}
+        <h3>Welcome to word game wonders!</h3>
+        <h5>The rules are as follows:</h5>
+        <li>
+          <ul>A random word of seven letters or more will be generated.</ul>
+          <ul>As the word appears a timer will begin and it's a race against the clock.</ul>
+          <ul>The object of the game is to create seven words of 3 letters or more.</ul>
+          <ul>As soon as your seventh word is entered the timer will stop and you will be told how many you got correct!</ul>
+          <ul>Get all seven correct and you are a new winner on the scoreboard!</ul>
+        <li>
+        <h5>Good luck!</h5>
+        <a href="/startgame">
+          <button>Start!</button>
+        </a>
+{% endblock %}
