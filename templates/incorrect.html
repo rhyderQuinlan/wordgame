@@ -2,15 +2,16 @@
 
 {% block body %}
 
-  <h2>Fail!</h2>
+  <h2>Unlucky!</h2>
+  <h5>You got {{correct}} out of 7</h5>
 
-  <ul>
+  <ol>
     {% for error in errors %}
     <li>
       {{error}}
     </li>
     {% endfor %}
-  </ul>
+  </ol>
   </br>
   <a href="/">
     <button type="button" name="button">Play again?</button>

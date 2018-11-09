@@ -46,6 +46,7 @@ def startgame():
     session['leaderboardlist'] = []
     session['sourceword'] = generate.sourceword()
     session['time'] = time.time()
+    session['leaderboardlist'] = generate.leaderboard()
     return render_template("game.html", title='Wordgame Wonders', sourceword=session.get('sourceword'))
 
 @app.route('/validate', methods=['POST'])
@@ -54,14 +55,13 @@ def validate():
         session['wordstring'] = request.form['wordstring']
         session['stoptime'] = round(time.time() - session.get('time'), 2)
         if validate_words(session.get('wordstring'), session.get('sourceword')):
-            session['leaderboardlist'] = generate.leaderboard()
             on_leaderboard = check_leaderboard(session.get('leaderboardlist'), session.get('stoptime'))
             if on_leaderboard == True:
                 return render_template('on_leaderboard.html', title="Top 20!", time=session.get('stoptime'))
             else:
                 return render_template('leaderboard.html', leaderboard=session.get('leaderboardlist'))
         else:
-            return render_template('fail.html', title="Almost", time=session.get('stoptime'), errors=session.get('errors'))
+            return render_template('incorrect.html', title=(str(session.get('correct')) + " out of 7!"), time=session.get('stoptime'), errors=session.get('errors'), correct=session.get('correct'))
 
 @app.route('/leaderboard', methods=['POST'])
 def add_to_leaderboard():
