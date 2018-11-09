@@ -24,5 +24,4 @@ def leaderboard():
             line[i] = line[i].strip()
         leaderboardlist.append(line)
 
-    open('leaderboard.txt', 'w').close()
     return leaderboardlist

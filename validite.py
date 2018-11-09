@@ -1,7 +1,7 @@
 import enchant
+from flask import Flask, session
 
-tempwords = []
-def checkword(word, sourcewordlist, sourceword, errors):
+def checkword(word, sourcewordlist, sourceword, errors, tempwords):
     #check letters
     letterfrequency = sourcewordlist.copy()
     for x in range(len(word)):
@@ -35,4 +35,5 @@ def checkword(word, sourcewordlist, sourceword, errors):
         errors.append(word + " is equal to the sourceword")
         return False
 
+    session['errors'] = errors
     return True
