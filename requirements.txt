@@ -1,3 +1,2 @@
 flask==1.0.2
 pyenchant==2.0.0
-simplestopwatch==0.3.3
