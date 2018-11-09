@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block body %}
-    <h2>Congratulations you are in the top 20!</h2>
-    <h3>With a time of {{time}}</h3>
+    <h2>Congratulations!</h2>
+    <h3>You completed it with a time of {{time}}</h3>
     <form action="/leaderboard" method="POST">
         Enter your name: <input type="text" name="name" value="">
         <input type="submit" name="submit" value="Submit">

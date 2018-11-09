@@ -1,6 +1,6 @@
 import random
 
-#Generate source word
+# Generate source word
 def sourceword():
     sourcewordslist = []
     with open("dict/sourcewords.txt") as sourcewordfile:
@@ -11,15 +11,15 @@ def sourceword():
 
     return word
 
-def leaderboard():
-    file = open('leaderboard.txt', 'r')
-    lines = file.readlines()
 
+def leaderboard():
+    file = open("leaderboard.txt", "r")
+    lines = file.readlines()
 
     leaderboardlist = []
 
     for line in lines:
-        line = line.split(',')
+        line = line.split(",")
         for i in range(0, len(line)):
             line[i] = line[i].strip()
         leaderboardlist.append(line)
