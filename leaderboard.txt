@@ -2,6 +2,7 @@ Rhyder,8.67
 Dylan,20.96
 Mary,21.89
 Mat,22.67
+Rhyder,31.38
 Thomas,31.59
 Deven,37.89
 Chris,38.92
@@ -11,3 +12,4 @@ Daryl,40.12
 Amy,40.69
 Esmee,40.71
 Jamal,45.18
+Tim,282.59

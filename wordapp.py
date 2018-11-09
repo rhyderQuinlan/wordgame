@@ -73,7 +73,7 @@ def validate():
         session["stoptime"] = round(time.time() - session.get("time"), 2)
         if validate_words():
             session["on_leaderboard"] = check_leaderboard(
-                session.get("leaderboardlist"), session.get("stoptime")
+                session.get("longleaderboardlist"), session.get("stoptime")
             )
             if session.get("on_leaderboard") == True:
                 return render_template(
