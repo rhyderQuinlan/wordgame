@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+  <h2>Leaderboard</h2>
+
+  {% if length == 0 %}
+    <p>There are no winners yet!</p>
+  {% endif %}
+
+  {%if length != 0 %}
+    <ul>
+      {% for line in leaderboard %}
+      <li>
+        {{line}}
+      </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  </br>
+  <a href="/">
+    <button type="button" name="button">Play again?</button>
+  </a>
+
+{% endblock %}}

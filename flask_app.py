@@ -26,35 +26,16 @@ def validate_words(wordstring, sourceword):
     else:
         return False
 
-def on_leaderboard(leaderboardlist, time):
-    if leaderboardlist[20].value > time:
+def check_leaderboard(leaderboardlist, time):
+    if len(leaderboardlist) == 0:
+        session['empty'] = True
+        return True
+    elif len(leaderboardlist) < 20:
+        return True
+    elif leaderboardlist[20][1] > time:
         return True
     else:
         return False
-
-def add_to_leaderboard():
-    file = open('test.txt', 'r')
-    lines = file.readlines()
-
-    leaderboard = []
-    new_score = [name, score]
-
-    for line in lines:
-        line = line.split(',')
-        for i in range(0, len(line)):
-            line[i] = line[i].strip()
-        leaderboard.append(line)
-
-    for i in range(0, len(leaderboard)):
-        if score < int(leaderboard[i][1]):
-            leaderboard.insert(i, new_score)
-
-    open('test.txt', 'w').close()
-
-    for line in leaderboard:
-        with open('test.txt', 'a') as file:
-            string = str(line[0]) + ', ' + str(line[1])
-            file.write(string + '\n')
 
 @app.route('/')
 def display_home():
@@ -62,6 +43,7 @@ def display_home():
 
 @app.route('/startgame')
 def startgame():
+    session['leaderboardlist'] = []
     session['sourceword'] = generate.sourceword()
     session['time'] = time.time()
     return render_template("game.html", title='Wordgame Wonders', sourceword=session.get('sourceword'))
@@ -70,10 +52,10 @@ def startgame():
 def validate():
     if request.method=='POST':
         session['wordstring'] = request.form['wordstring']
+        session['stoptime'] = round(time.time() - session.get('time'), 2)
         if validate_words(session.get('wordstring'), session.get('sourceword')):
-            session['stoptime'] = round(time.time() - session.get('time'), 2)
             session['leaderboardlist'] = generate.leaderboard()
-            on_leaderboard = on_leaderboard(session.get('leaderboardlist'), session.get('stoptime'))
+            on_leaderboard = check_leaderboard(session.get('leaderboardlist'), session.get('stoptime'))
             if on_leaderboard == True:
                 return render_template('on_leaderboard.html', title="Top 20!", time=session.get('stoptime'))
             else:
@@ -85,30 +67,33 @@ def validate():
 def add_to_leaderboard():
     if request.method=='POST':
         session['name'] = request.form['name']
-        file = open('leaderboard.txt', 'r')
-        lines = file.readlines()
+        time = float(session.get('stoptime'))
+        player_score = [session.get('name'),time]
 
-        float_score = float(session.get('stoptime'))
-        leaderboard = []
+        leaderboard = session.get('leaderboardlist')
 
-        player_score = [session.get('name'),float_score]
-
-        for line in lines:
-            line = line.split(',')
-            for i in range(0, len(line)):
-                line[i] = line[i].strip()
-            leaderboard.append(line)
-
-        open('leaderboard.txt', 'w').close() #wipes leaderboard.txt
-
-        for i in range(0, len(leaderboard)):
-            if float_score < float(leaderboard[i][1]):
-                leaderboard.insert(i, player_score)
+        if session.get('empty'):
+            leaderboard.append(player_score)
+        elif time > float(leaderboard[len(leaderboard) - 1][1]):
+            leaderboard.append(player_score)
+        else:
+            for i in range(0, len(leaderboard)):
+                if time < float(leaderboard[i][1]):
+                    leaderboard.insert(i, player_score)
+                    inserted = True
+                    break
 
         for line in leaderboard:
             with open('leaderboard.txt', 'a') as file:
                 string = line[0] +","+ str(line[1])
                 file.write(string + '\n')
+
+    return render_template('leaderboard.html', leaderboard = leaderboard)
+
+@app.route('/showleaderboard')
+def show_leaderboard():
+        return render_template('leaderboard.html', leaderboard=session.get('leaderboardlist'), length=len(session.get('leaderboardlist')))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

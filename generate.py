@@ -12,10 +12,17 @@ def sourceword():
     return word
 
 def leaderboard():
-    leaderboardlist = []
-    with open("leaderboard.txt") as leaderboardfile:
-        for line in leaderboardfile:
-            leaderboardlist.append(line.split(','))
+    file = open('leaderboard.txt', 'r')
+    lines = file.readlines()
 
-    print(leaderboardlist)
+
+    leaderboardlist = []
+
+    for line in lines:
+        line = line.split(',')
+        for i in range(0, len(line)):
+            line[i] = line[i].strip()
+        leaderboardlist.append(line)
+
+    open('leaderboard.txt', 'w').close()
     return leaderboardlist
