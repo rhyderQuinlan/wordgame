@@ -3,7 +3,7 @@
 {% block body %}
     <h2>Congratulations you are in the top 20!</h2>
     <h3>With a time of {{time}}</h3>
-    <form action="/validate" method="POST">
+    <form action="/leaderboard" method="POST">
         Enter your name: <input type="text" name="name" value="">
         <input type="submit" name="submit" value="Submit">
     </form>

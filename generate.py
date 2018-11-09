@@ -11,10 +11,11 @@ def sourceword():
 
     return word
 
-def leaderboard(time):
+def leaderboard():
     leaderboardlist = []
     with open("leaderboard.txt") as leaderboardfile:
         for line in leaderboardfile:
-            leaderboardlist.append()
+            leaderboardlist.append(line.split(','))
 
+    print(leaderboardlist)
     return leaderboardlist

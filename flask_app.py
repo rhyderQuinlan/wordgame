@@ -32,6 +32,30 @@ def on_leaderboard(leaderboardlist, time):
     else:
         return False
 
+def add_to_leaderboard():
+    file = open('test.txt', 'r')
+    lines = file.readlines()
+
+    leaderboard = []
+    new_score = [name, score]
+
+    for line in lines:
+        line = line.split(',')
+        for i in range(0, len(line)):
+            line[i] = line[i].strip()
+        leaderboard.append(line)
+
+    for i in range(0, len(leaderboard)):
+        if score < int(leaderboard[i][1]):
+            leaderboard.insert(i, new_score)
+
+    open('test.txt', 'w').close()
+
+    for line in leaderboard:
+        with open('test.txt', 'a') as file:
+            string = str(line[0]) + ', ' + str(line[1])
+            file.write(string + '\n')
+
 @app.route('/')
 def display_home():
     return render_template("index.html", title="Wordgame Wonders")
@@ -48,12 +72,12 @@ def validate():
         session['wordstring'] = request.form['wordstring']
         if validate_words(session.get('wordstring'), session.get('sourceword')):
             session['stoptime'] = round(time.time() - session.get('time'), 2)
-            session['leaderboardlist'] = generate.leaderboard(session.get('stoptime'))
+            session['leaderboardlist'] = generate.leaderboard()
             on_leaderboard = on_leaderboard(session.get('leaderboardlist'), session.get('stoptime'))
             if on_leaderboard == True:
                 return render_template('on_leaderboard.html', title="Top 20!", time=session.get('stoptime'))
             else:
-                return render_template('leaderboard.html', leaderboard=leaderboardlist)
+                return render_template('leaderboard.html', leaderboard=session.get('leaderboardlist'))
         else:
             return render_template('fail.html', title="Almost", time=session.get('stoptime'), errors=session.get('errors'))
 
@@ -61,13 +85,30 @@ def validate():
 def add_to_leaderboard():
     if request.method=='POST':
         session['name'] = request.form['name']
-        for x in range(20):
-            if leaderboardlist[x].value() > session.get('time'):
-                for y = x in len:
-                    leaderboardlist[y + 1] = leaderboardlist[y]
+        file = open('leaderboard.txt', 'r')
+        lines = file.readlines()
 
+        float_score = float(session.get('stoptime'))
+        leaderboard = []
 
+        player_score = [session.get('name'),float_score]
 
+        for line in lines:
+            line = line.split(',')
+            for i in range(0, len(line)):
+                line[i] = line[i].strip()
+            leaderboard.append(line)
+
+        open('leaderboard.txt', 'w').close() #wipes leaderboard.txt
+
+        for i in range(0, len(leaderboard)):
+            if float_score < float(leaderboard[i][1]):
+                leaderboard.insert(i, player_score)
+
+        for line in leaderboard:
+            with open('leaderboard.txt', 'a') as file:
+                string = line[0] +","+ str(line[1])
+                file.write(string + '\n')
 
 if __name__ == '__main__':
     app.run(debug=True)
